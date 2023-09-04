@@ -4,7 +4,7 @@ const UserSchema = new mongoose.Schema(
   {
     firstName: {
       type: String,
-      required: true,
+      //required: true,
       min: 2,
       max: 100,
     },
@@ -20,41 +20,41 @@ const UserSchema = new mongoose.Schema(
     },
     joinRealEmail: {
       type: String,
-      required: true,
+      //required: true,
       max: 50,
       unique: true,
     },
     licenseNumber: {
       type: String,
-      required: true,
+      //required: true,
       unique: true,
     },
     licenseExpirationDate: {
       type: String,
-      required: true,
+      //required: true,
     },
     website: {
       type: String,
-      required: true,
+      //required: true,
     },
     sponsorLink: {
       type: String,
-      required: true,
+      //required: true,
     },
     shareworksId: {
       type: String,
-      required: true,
+      //required: true,
       max: 50,
     },
     email: {
       type: String,
-      required: true,
+      //required: true,
       max: 50,
       unique: true,
     },
     password: {
       type: String,
-      required: true,
+      //required: true,
       min: 5,
     },
     address: String,
@@ -66,6 +66,7 @@ const UserSchema = new mongoose.Schema(
     countryCode: String,
     phoneNumber: String,
     transactions: Array,
+    image: String,
     role: {
       type: String,
       enum: ["user", "admin", "superadmin"],

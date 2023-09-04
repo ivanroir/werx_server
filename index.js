@@ -26,12 +26,13 @@ app.use(morgan("common"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use(cors())
+app.use('/uploads', express.static('uploads'))
 
 /* ROUTES */
-app.use("/client", clientRoutes);
-app.use("/general", generalRoutes);
-app.use("/management", managementRoutes);
-app.use("/sales", salesRoutes);
+app.use("/api/client", clientRoutes);
+app.use("/api/general", generalRoutes);
+app.use("/api/management", managementRoutes);
+app.use("/api/sales", salesRoutes);
 
 /* MONGOOSE SETUP */
 
