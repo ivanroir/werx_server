@@ -2,18 +2,13 @@ import User from "../models/User.js";
 import CDA from "../models/CDA.js";
 
 // Show list of Users
-export default function index(req, res, next) {
-  User.find()
-    .then((response) => {
-      res.json({
-        response,
-      });
-    })
-    .catch((error) => {
-      res.json({
-        message: "An error Occured!",
-      });
-    });
+export default async function index(req, res, next) {
+  try {
+    const user = await User.find();
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
 }
 
 // Show single User
@@ -55,6 +50,7 @@ export const storeUser = (req, res, next) => {
     transactions: req.body.transactions,
   });
 
+  // console.log("🚀 ~ file: management.js:59 ~ storeUser ~ req:", req.files)
   if (req.file) {
     user.image = req.file.path;
   }
@@ -171,17 +167,19 @@ export const getCDA = (req, res, next) => {
 // Add CDA
 export const storeCDA = (req, res, next) => {
   let cda = new CDA({
-    userId: req.body.userID,
+    userID: req.body.userID,
   });
 
   //for array / multiple
+  console.log("File ", req.file)
+  console.log("Files ", req.files)
   if (req.files) {
     let path = "";
     req.files.forEach(function (files, index, arr) {
       path = path + files.path + ",";
     });
     path = path.substring(0, path.lastIndexOf(","));
-    cda.image = path;
+    cda.file = path;
   }
 
   cda
@@ -203,7 +201,7 @@ export const updateCDA = (req, res, next) => {
   let cdaID = req.body.cdaID;
 
   let updatedData = {
-    userId: req.body.userID,
+    userID: req.body.userID,
   };
 
   cda

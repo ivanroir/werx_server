@@ -22,7 +22,7 @@ router.post("/delete", destroyUser);
 
 router.get("/show-cda-list", getCDAList);
 router.post("/show-cda", getCDA);
-router.post("/store-cda", upload.array("file"), storeCDA);
+router.post("/store-cda", upload.array("file[]"), storeCDA);
 router.post("/update-cda", updateCDA);
 router.post("/delete-cda", destroyCDA);
 

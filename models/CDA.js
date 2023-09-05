@@ -2,13 +2,8 @@ import mongoose from "mongoose";
 
 const CDASchema = new mongoose.Schema(
   {
-    userId: {
-      type: String,
-      // required: true,
-      min: 2,
-      max: 100,
-    },
-    file: String
+    userID: String,
+    file: String,
   },
   {
     timestamps: true,
