@@ -12,17 +12,14 @@ export default async function index(req, res, next) {
 }
 
 // Show single User
-export const showUser = (req, res, next) => {
-  let userID = req.body.userID;
-  User.findById(userID)
-    .then((response) => {
-      res.json({});
-    })
-    .catch((error) => {
-      res.json({
-        message: "An error Occured!",
-      });
-    });
+export const showUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
 };
 
 // Add user
@@ -54,16 +51,6 @@ export const storeUser = (req, res, next) => {
   if (req.file) {
     user.image = req.file.path;
   }
-
-  //for array / multiple
-  //   if (req.files) {
-  //     let path = ''
-  //     req.files.forEach(function(files, index, arr) {
-  //         path = path + files.path + ','
-  //     })
-  //     path = path.substring(0, path.lastIndexOf(","))
-  //     user.image = path
-  //   }
 
   user
     .save()
@@ -136,32 +123,24 @@ export const destroyUser = (req, res, next) => {
 };
 
 // Display all list CDA
-export const getCDAList = (req, res, next) => {
-  CDA.find()
-    .then((response) => {
-      res.json({
-        response,
-      });
-    })
-    .catch((error) => {
-      res.json({
-        message: "An error Occured!",
-      });
-    });
-};
+export async function getCDAList(req, res, next) {
+  try {
+    const cda = await CDA.find();
+    res.status(200).json(cda);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+}
 
 // Display single CDA
-export const getCDA = (req, res, next) => {
-  let userID = req.body.userID;
-  CDA.findById(userID)
-    .then((response) => {
-      res.json({});
-    })
-    .catch((error) => {
-      res.json({
-        message: "An error Occured!",
-      });
-    });
+export const getCDA = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const cda = await CDA.findById(id);
+    res.status(200).json(cda);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
 };
 
 // Add CDA
@@ -171,8 +150,6 @@ export const storeCDA = (req, res, next) => {
   });
 
   //for array / multiple
-  console.log("File ", req.file)
-  console.log("Files ", req.files)
   if (req.files) {
     let path = "";
     req.files.forEach(function (files, index, arr) {
@@ -187,11 +164,13 @@ export const storeCDA = (req, res, next) => {
     .then((response) => {
       res.json({
         message: "CDA Added Successfully!",
+        isSuccess: true,
       });
     })
     .catch((error) => {
       res.json({
         message: "CDA not Successfully Added, An error Occured!",
+        isSuccess: false,
       });
     });
 };
@@ -204,8 +183,7 @@ export const updateCDA = (req, res, next) => {
     userID: req.body.userID,
   };
 
-  cda
-    .findByIdAndUpdate(cdaID, { $set: updatedData })
+  CDA.findByIdAndUpdate(cdaID, { $set: updatedData })
     .then(() => {
       res.json({
         message: "User Updated Successfully!",
