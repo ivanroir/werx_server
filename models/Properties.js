@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
 
-const UserSchema = new mongoose.Schema(
+const PropertiesSchema = new mongoose.Schema(
   {
+    userID: String,
     mlsNumber: {
       type: String,
       min: 2,
@@ -37,7 +38,7 @@ const UserSchema = new mongoose.Schema(
     transactionCoordinatorFee: String,
     splitPaid: String,
     officeFees: String,
-    agent: String,
+    agentID: String,
     escrowCompany : String,
     mortgageCompany: String,
     contractStartDate: String,
@@ -51,5 +52,5 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
-const User = mongoose.model("User", UserSchema);
-export default User;
+const Properties = mongoose.model("Properties", PropertiesSchema);
+export default Properties;

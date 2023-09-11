@@ -147,6 +147,8 @@ export const getCDA = async (req, res) => {
 export const storeCDA = (req, res, next) => {
   let cda = new CDA({
     userID: req.body.userID,
+    agentID: req.body.agentID,
+    name: req.body.name
   });
 
   //for array / multiple
@@ -154,7 +156,7 @@ export const storeCDA = (req, res, next) => {
     let path = "";
     req.files.forEach(function (files, index, arr) {
       path = path + files.path + ",";
-    });
+    });3143
     path = path.substring(0, path.lastIndexOf(","));
     cda.file = path;
   }

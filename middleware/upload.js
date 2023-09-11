@@ -17,6 +17,7 @@ export const upload = multer({
     if (
       file.mimetype == "image/png" ||
       file.mimetype == "image/jpg" ||
+      file.mimetype == "image/jpeg" ||
       file.mimetype == "application/pdf"
     ) {
       callback(null, true);

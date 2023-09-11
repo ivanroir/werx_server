@@ -1,5 +1,5 @@
 import User from "../models/User.js";
-import Properties from "../models/User.js";
+import Properties from "../models/Properties.js";
 
 export const getUser = async (req, res) => {
   try {
@@ -11,16 +11,38 @@ export const getUser = async (req, res) => {
   }
 };
 
+// Show list of Properties
+export const getPropertiesList = async (req, res, next) => {
+  try {
+    const properties = await Properties.find();
+    res.status(200).json(properties);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+// Show single Properties
+export const getProperties = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const properties = await Properties.findById(id);
+    res.status(200).json(properties);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
 //Add Properties
 export const storeProperties = (req, res, next) => {
   let properties = new Properties({
+    userID: req.body.userID,
     mlsNumber: req.body.mlsNumber,
     transactionType: req.body.transactionType,
     propertyType: req.body.propertyType,
     propertyStatus: req.body.propertyStatus,
     street: req.body.street,
     city: req.body.city,
-    state: req.body.state,
+    state: req.body.states,
     postalCode: req.body.postalCode,
     salesPrice: req.body.salesPrice,
     units: req.body.units,
@@ -30,7 +52,7 @@ export const storeProperties = (req, res, next) => {
     transactionCoordinatorFee: req.body.transactionCoordinatorFee,
     splitPaid: req.body.splitPaid,
     officeFees: req.body.officeFees,
-    agent: req.body.agent,
+    agentID: req.body.agentID,
     escrowCompany: req.body.escrowCompany,
     mortgageCompany: req.body.mortgageCompany,
     contractStartDate: req.body.contractStartDate,
@@ -44,7 +66,8 @@ export const storeProperties = (req, res, next) => {
     properties.image = req.file.path;
   }
 
-  properties.save()
+  properties
+    .save()
     .then((response) => {
       res.json({
         message: "Properties Added Successfully!",

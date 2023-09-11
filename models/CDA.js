@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 const CDASchema = new mongoose.Schema(
   {
     userID: String,
+    agentID: String,
+    name: String,
     file: String,
   },
   {
