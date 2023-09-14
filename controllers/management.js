@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import CDA from "../models/CDA.js";
+import { uploadFile } from "../s3.js";
 
 // Show list of Users
 export default async function index(req, res, next) {
@@ -144,7 +145,7 @@ export const getCDA = async (req, res) => {
 };
 
 // Add CDA
-export const storeCDA = (req, res, next) => {
+export const storeCDA = async (req, res, next) => {
   let cda = new CDA({
     userID: req.body.userID,
     agentID: req.body.agentID,
@@ -158,7 +159,10 @@ export const storeCDA = (req, res, next) => {
       path = path + files.path + ",";
     });3143
     path = path.substring(0, path.lastIndexOf(","));
-    cda.file = path;
+    cda.document.fileURL = path;
+
+    const result = await uploadFile(req.file)
+    console.log(result)
   }
 
   cda

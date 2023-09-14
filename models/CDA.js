@@ -2,10 +2,17 @@ import mongoose from "mongoose";
 
 const CDASchema = new mongoose.Schema(
   {
-    userID: String,
+    adminID: String,
     agentID: String,
     name: String,
-    file: String,
+    document: {
+      fileURL: String,
+      uploadDate: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  
   },
   {
     timestamps: true,

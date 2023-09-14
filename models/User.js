@@ -2,71 +2,87 @@ import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema(
   {
-    firstName: {
-      type: String,
-      //required: true,
-      min: 2,
-      max: 100,
+    firstName: String,
+    middleName: String,
+    lastName: String,
+    dateOfBirth: String,
+    email: String,
+    username: String,
+    password: String,
+    gender: String,
+    address: {
+      street: String,
+      city: String,
+      state: String,
+      zipCode: String,
+      country: String,
     },
-    middleName: {
-      type: String,
-      min: 1,
-      max: 100,
-    },
-    lastName: {
-      type: String,
-      min: 2,
-      max: 100,
-    },
-    joinRealEmail: {
-      type: String,
-      //required: true,
-      max: 50,
-      unique: true,
-    },
-    licenseNumber: {
-      type: String,
-      //required: true,
-      unique: true,
-    },
-    licenseExpirationDate: {
-      type: String,
-      //required: true,
-    },
-    website: {
-      type: String,
-      //required: true,
-    },
-    sponsorLink: {
-      type: String,
-      //required: true,
-    },
-    shareworksId: {
-      type: String,
-      //required: true,
-      max: 50,
-    },
-    email: {
-      type: String,
-      //required: true,
-      max: 50,
-      unique: true,
-    },
-    password: {
-      type: String,
-      //required: true,
-      min: 5,
-    },
-    address: String,
-    city: String,
-    state: String,
-    zip: String,
-    country: String,
-    position: String,
-    countryCode: String,
     phoneNumber: String,
+    countryCode: String,
+    joinRealEmail: String,
+    licenses: [
+      {
+        name: String,
+        licenseNumber: String,
+        issuingAuthority: String,
+        expirationDate: Date,
+      },
+    ],
+    website: String,
+    sponsorLink: String,
+    shareworksId: String,
+    department: {
+      departmentID: String,
+      name: String,
+      description: String,
+    },
+    teams: {
+      teamID: String,
+      name: String,
+      description: String,
+    },
+    manager: {
+      name: String,
+      email: String,
+      phoneNumber: String,
+    },
+    specialties: [String],
+    position: String,
+    socialMediaProfiles: [
+      {
+        platform: String,
+        url: String,
+      },
+    ],
+    languagesSpoken: [String],
+    recentSales: [
+      {
+        propertyType: String,
+        salePrice: Number,
+        saleDate: Date,
+      },
+    ],
+
     transactions: Array,
     image: String,
+    hireDate: String,
+
+    emergencyContact: {
+      name: String,
+      relationship: String,
+      phoneNumber: String,
+      email: String,
+    },
+    salary: {
+      baseSalary: Number,
+      bonuses: [Number],
+    },
+    benefits: [String],
+    notes: String,
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
     role: {
       type: String,
       enum: ["user", "admin", "superadmin"],
