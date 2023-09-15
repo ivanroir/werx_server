@@ -6,7 +6,9 @@ const CDASchema = new mongoose.Schema(
     agentID: String,
     name: String,
     document: {
-      fileURL: String,
+      fileURL: {
+        type: String,
+      },
       uploadDate: {
         type: Date,
         default: Date.now,

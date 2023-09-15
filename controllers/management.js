@@ -1,6 +1,6 @@
 import User from "../models/User.js";
 import CDA from "../models/CDA.js";
-import { uploadFile } from "../s3.js";
+import { getFileStream, uploadFile, uploadFiles } from "../s3.js";
 
 // Show list of Users
 export default async function index(req, res, next) {
@@ -138,6 +138,8 @@ export const getCDA = async (req, res) => {
   try {
     const { id } = req.params;
     const cda = await CDA.findById(id);
+    const readStream = getFileStream(id)
+    readStream.pipe(res)
     res.status(200).json(cda);
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -146,23 +148,30 @@ export const getCDA = async (req, res) => {
 
 // Add CDA
 export const storeCDA = async (req, res, next) => {
+  let result = "";
   let cda = new CDA({
-    userID: req.body.userID,
+    adminID: req.body.userID,
     agentID: req.body.agentID,
-    name: req.body.name
+    name: req.body.name,
   });
 
   //for array / multiple
+
   if (req.files) {
     let path = "";
     req.files.forEach(function (files, index, arr) {
       path = path + files.path + ",";
-    });3143
+    });
     path = path.substring(0, path.lastIndexOf(","));
     cda.document.fileURL = path;
 
-    const result = await uploadFile(req.file)
-    console.log(result)
+    try {
+      result = await uploadFiles(req.files);
+      console.log(result);
+    } catch (error) {
+      console.error("Error uploading files to S3:", error);
+      // Handle the error as needed
+    }
   }
 
   cda
@@ -171,6 +180,7 @@ export const storeCDA = async (req, res, next) => {
       res.json({
         message: "CDA Added Successfully!",
         isSuccess: true,
+        imagePath: `/images/${result.Key}`,
       });
     })
     .catch((error) => {
